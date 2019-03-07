@@ -1,9 +1,18 @@
 <?php 
     $result = "";
+    define('SITE_KEY', '6LfQ4JQUAAAAAAtfE2Vne8s5R6UWbwo2iDqR94FC');
+    define('SECRET_KEY', '6LfQ4JQUAAAAAIZC65cMnbTsnJ5CV7WWGHlv--mT');
 
     if(isset($_POST['submit'])) {
 
-      if($_POST['Answer'] == 2) {
+      function getCaptcha($SecretKey){
+        $Response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".SECRET_KEY."&response={$SecretKey}");
+        $Return = json_decode($Response);
+        return $Return;
+    }
+    $Return = getCaptcha($_POST['g-recaptcha-response']);
+
+      if($Return->success == true && $Return->score > 0.5) {
 
         $name = $_POST['name'];
         $mailFrom = $_POST['email'];
@@ -22,7 +31,7 @@
         }
       }
       else {
-        $result = "Either you're a robot or your answer [".$_POST['Answer']."] is wrong.";
+        $result = "Google thinks you're a robot. <br>If you're not, please email me at hollyjrobertson@hollyjrobertson.com.";
       }
 }
 
@@ -30,6 +39,7 @@
 <!DOCTYPE html>
 <html>
 <title>Holly Robertson</title>
+<script src='https://www.google.com/recaptcha/api.js?render=<?php echo SITE_KEY; ?>'></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -50,7 +60,6 @@
     <a href="#portfolio" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> PORTFOLIO</a>
     <a href="#contact" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-envelope"></i> CONTACT</a>
     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-red">
-      <i class="fa fa-search"></i>
     </a>
   </div>
 
@@ -202,11 +211,11 @@
     </div>
     <div class="w3-col m8 w3-panel">
       <div class="w3-large w3-margin-bottom">
-        <i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Austin, Tx, US<br>
-        <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: (737) 210.1465<br>
+        <i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Austin, TX, US<br>
+        <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: <a href="tel:737-210-1465">737.210.1465</a><br>
         <i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: hollyjrobertson@hollyjrobertson.com<br>
       </div>
-      <p>Feel free to call me or leave me a note:</p>
+      <p>Feel free to call or leave me a note:</p>
       <form action="index.php#contact" method="post">
         <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
           <div class="w3-half">
@@ -217,15 +226,7 @@
           </div>
         </div>
         <input class="w3-input w3-border" id="message" type="text" placeholder="Message" name="message" required>
-       <label>For security, please solve this problem:</label>
-         <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
-          <div class="w3-half">
-            <img src="assets/images/captcha.png" alt="1 times 2" width="50%" align="right">
-          </div>
-           <div class="w3-half">
-            <input class="w3-input w3-border" type="text" placeholder="Answer" name="Answer" required>
-          </div>
-        </div>
+        <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" /><br>
         <input class="w3-button w3-black w3-right w3-section" type="submit" name="submit">
       </form>
     </div>
@@ -245,8 +246,14 @@
     <a href="https://twitter.com/HollyRo10307571" target="_blank"><i class="fa fa-twitter w3-hover-opacity"></i></a>
   </div>
 </footer>
- 
-<script src="assets/styles/main.js"></script>
-
+  <script>
+    grecaptcha.ready(function() {
+    grecaptcha.execute('<?php echo SITE_KEY; ?>', {action: 'homepage'})
+    .then(function(token) {
+        //console.log(token);
+        document.getElementById('g-recaptcha-response').value=token;
+    });
+    });
+    </script>
 </body>
 </html>
