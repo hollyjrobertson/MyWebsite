@@ -169,7 +169,7 @@
       <img src="assets/images/banner.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Home Page">
     </div>
     <div class="w3-col m3">
-      <img src="assets/images/banner1.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="About Section">
+      <img src="assets/images/papa_logo.png" style="width:100%" height=120 onclick="onClick(this)" class="w3-hover-opacity" alt="Logo">
     </div>
     <div class="w3-col m3">
       <img src="assets/images/banner2.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Menu Section">
@@ -246,14 +246,7 @@
     <a href="https://twitter.com/HollyRo10307571" target="_blank"><i class="fa fa-twitter w3-hover-opacity"></i></a>
   </div>
 </footer>
-  <script>
-    grecaptcha.ready(function() {
-    grecaptcha.execute('<?php echo SITE_KEY; ?>', {action: 'homepage'})
-    .then(function(token) {
-        //console.log(token);
-        document.getElementById('g-recaptcha-response').value=token;
-    });
-    });
+  <script src="assets/js/main.js">
     </script>
 </body>
 </html>
