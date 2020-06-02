@@ -12,13 +12,13 @@
     }
     $Return = getCaptcha($_POST['g-recaptcha-response']);
 
-      if($Return->success == true && $Return->score > 0.5) {
+      //if($Return->success == true && $Return->score > 0.5) {
 
         $name = $_POST['name'];
         $mailFrom = $_POST['email'];
         $message = $_POST['message'];
 
-        $mailTo = "hollyjrobertson@hollyjrobertson.com";
+        $mailTo = "holly@hollyjrobertson.com";
         $headers = "From:".$mailFrom;
         $subject = "Holly, You have mail from ".$name;
         $txt = "You have received an e-mail from ".$name.":\r\n"."\r\n".$message;
@@ -29,10 +29,10 @@
         else {
             $result = "Your message did not send. <br>I am working on this right now.";
         }
-      }
-      else {
-        $result = "Google thinks you're a robot. <br>If you're not, please email me at hollyjrobertson@hollyjrobertson.com.";
-      }
+      //}
+      //else {
+       // $result = "Google thinks you're a robot. <br>If you're not, please email me at hollyjrobertson@hollyjrobertson.com.";
+      //}
 }
 
  ?>
